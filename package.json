@@ -1,0 +1,54 @@
+{
+  "name": "paper-pet-agent-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "dev-backend": "python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000",
+    "dev-frontend": "npm --prefix frontend run dev",
+    "build-ui": "npm --prefix frontend run build",
+    "build-backend": "python -m PyInstaller --onefile --name backend --distpath electron --workpath .pyinstaller_build --specpath .pyinstaller_spec app/main.py",
+    "build-backend-dir": ".venv\\Scripts\\pyinstaller.exe --noconfirm --onedir --paths . --name backend --distpath electron\\backend-dist --workpath .pyinstaller_build --specpath .pyinstaller_spec app/main.py",
+    "start": "npm run build-ui && electron .",
+    "dev": "npm run build-ui && electron .",
+    "pack": "npm run build-ui && npm run build-backend-dir && electron-builder --dir",
+    "dist": "npm run build-ui && npm run build-backend-dir && electron-builder",
+    "dist-dir-backend": "npm run build-ui && npm run build-backend-dir && electron-builder",
+    "dist-existing-backend": "npm run build-ui && electron-builder",
+    "electron": "electron ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^26.0.0",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.paperpet.agent",
+    "productName": "论文宠物助手",
+    "artifactName": "${productName}-Setup-${version}.${ext}",
+    "files": [
+      "electron/**/*",
+      "frontend/dist/**/*",
+      "package.json",
+      "!electron/backend.exe",
+      "!electron/backend-dist/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "electron/backend-dist/backend",
+        "to": "electron/backend"
+      }
+    ],
+    "asar": true,
+    "compression": "maximum",
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "signAndEditExecutable": false
+    }
+  }
+}
