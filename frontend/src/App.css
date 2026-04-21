@@ -1,0 +1,1300 @@
+/* ===== 全局主题变量：改颜色、透明度、整体尺度先看这里 ===== */
+.app-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  --accent: #8ea0ff;
+  --accent-soft: rgba(142, 160, 255, 0.18);
+  --accent-strong: rgba(142, 160, 255, 0.85);
+  --accent-glow: rgba(142, 160, 255, 0.35);
+  --panel-rgb: 10, 12, 18;
+  --panel-alpha: 0.78;
+  --panel-scale: 1;
+  color: #eef2fb;
+}
+
+.ball-shell {
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+/* ===== 悬浮球：改玻璃感、光泽和整体观感 ===== */
+.floating-button {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 36px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.11), transparent 25%),
+    radial-gradient(circle at 72% 74%, var(--accent-soft), transparent 28%),
+    linear-gradient(145deg, rgba(var(--panel-rgb), 0.96), rgba(18, 21, 29, 0.88));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 24px 54px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(26px) saturate(145%);
+  cursor: grab;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.floating-button:hover {
+  transform: scale(1.03);
+}
+
+.floating-button:active {
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+/* ===== 主面板：整体半透明磨砂黑容器 ===== */
+.assistant-panel {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top left, var(--accent-soft), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.04), transparent 22%),
+    linear-gradient(145deg, rgba(var(--panel-rgb), var(--panel-alpha)), rgba(18, 21, 29, calc(var(--panel-alpha) - 0.1)));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 28px 80px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(30px) saturate(145%);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: calc(18px * var(--panel-scale)) calc(20px * var(--panel-scale));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pet-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+  -webkit-app-region: drag;
+}
+
+.pet-header-copy h1 {
+  margin: 0;
+  color: #f4f6fb;
+  font-size: calc(22px * var(--panel-scale));
+  font-weight: 700;
+}
+
+.pet-header-copy p {
+  margin: 4px 0 0;
+  color: rgba(221, 227, 241, 0.74);
+  font-size: calc(13px * var(--panel-scale));
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-button,
+.close-button,
+.ghost-button,
+.theme-button,
+.size-button,
+.chip,
+.action-button,
+.primary-button {
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.icon-button,
+.close-button {
+  width: calc(38px * var(--panel-scale));
+  height: calc(38px * var(--panel-scale));
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #edf2ff;
+  font-size: calc(20px * var(--panel-scale));
+  line-height: 1;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.icon-button:hover,
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: calc(18px * var(--panel-scale));
+  -webkit-app-region: no-drag;
+}
+
+.hero-card,
+.section-card,
+.stat-card,
+.result-card,
+.action-button,
+.settings-modal {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 16px 36px rgba(0, 0, 0, 0.22);
+}
+
+.hero-card {
+  display: flex;
+  flex-direction: column;
+  gap: calc(18px * var(--panel-scale));
+  padding: calc(22px * var(--panel-scale));
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+}
+
+/* ===== Hero 左右布局：控制文案和宠物区比例 ===== */
+.hero-main {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.hero-copy p {
+  margin: 12px 0 0;
+  color: rgba(215, 222, 238, 0.72);
+  line-height: 1.7;
+  font-size: calc(14px * var(--panel-scale));
+}
+
+.hero-cat-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: calc(11px * var(--panel-scale));
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero-card h2,
+.section-head h3,
+.result-card h4,
+.modal-head h3,
+.settings-block h4 {
+  margin: 0;
+  color: #f5f7fb;
+}
+
+.hero-card h2 {
+  font-size: calc(29px * var(--panel-scale));
+  line-height: 1.3;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: calc(14px * var(--panel-scale)) calc(16px * var(--panel-scale));
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.stat-card span {
+  color: rgba(190, 199, 220, 0.72);
+  font-size: calc(12px * var(--panel-scale));
+}
+
+.stat-card strong {
+  color: #f7f9fc;
+  font-size: calc(18px * var(--panel-scale));
+}
+
+.content-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+/* ===== 聊天区 / 输入区双栏：左聊天右输入，防止相互重叠 ===== */
+.chat-first {
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 1fr);
+  align-items: stretch;
+}
+
+.section-card {
+  padding: calc(18px * var(--panel-scale));
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.035);
+  min-width: 0;
+}
+
+/* ===== 两个主卡片的最低高度：太高太矮改这里 ===== */
+.primary-chat-card,
+.input-card {
+  display: flex;
+  flex-direction: column;
+  min-height: min(72vh, 680px);
+}
+
+.input-card {
+  min-height: min(64vh, 640px);
+}
+
+.insights-card {
+  margin-top: 18px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.status-badge,
+.status-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #c8d1ea;
+  font-size: calc(12px * var(--panel-scale));
+  font-weight: 700;
+}
+
+.status-dot.saved {
+  background: rgba(123, 234, 196, 0.1);
+  color: #8ce7c2;
+}
+
+/* ===== 关键：让聊天区和输入区的内部容器可收缩、可滚动 ===== */
+.chat-panel,
+.input-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+.chat-panel,
+.input-panel {
+  gap: 14px;
+}
+
+.paper-input,
+.composer input,
+.form-grid input,
+.range-row input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.paper-input,
+.composer input,
+.form-grid input {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #eff3fc;
+  font: inherit;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.paper-input::placeholder,
+.composer input::placeholder,
+.form-grid input::placeholder {
+  color: rgba(204, 212, 230, 0.4);
+}
+
+.paper-input:focus,
+.composer input:focus,
+.form-grid input:focus {
+  outline: none;
+  border-color: var(--accent-strong);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* ===== 论文输入框：想改输入区高度和编辑体感看这里 ===== */
+.paper-input {
+  min-height: 0;
+  height: 100%;
+  flex: 1;
+  padding: calc(16px * var(--panel-scale)) calc(18px * var(--panel-scale));
+  resize: none;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.action-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: calc(16px * var(--panel-scale));
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+  color: #edf2ff;
+  cursor: pointer;
+}
+
+.action-button:hover,
+.theme-button:hover,
+.size-button:hover,
+.chip:hover,
+.ghost-button:hover:not(:disabled),
+.primary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.action-button strong {
+  font-size: calc(15px * var(--panel-scale));
+}
+
+.action-button span {
+  color: rgba(195, 205, 227, 0.68);
+  font-size: calc(12px * var(--panel-scale));
+  text-align: left;
+}
+
+.action-button:disabled,
+.primary-button:disabled,
+.ghost-button:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.secondary-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ghost-button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #eef2fb;
+  cursor: pointer;
+}
+
+.result-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.result-card {
+  padding: calc(16px * var(--panel-scale));
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.result-card.accent {
+  background: radial-gradient(circle at top right, var(--accent-soft), transparent 22%), rgba(255, 255, 255, 0.05);
+}
+
+.result-card p,
+.message-bubble p,
+.empty-chat,
+.clean-list,
+.settings-tip {
+  color: rgba(220, 227, 240, 0.78);
+  line-height: 1.7;
+  font-size: calc(14px * var(--panel-scale));
+}
+
+.clean-list {
+  margin: 12px 0 0;
+  padding-left: 18px;
+}
+
+.clean-list li + li {
+  margin-top: 8px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.form-grid label {
+  display: grid;
+  gap: 8px;
+  color: rgba(226, 231, 242, 0.78);
+  font-size: calc(14px * var(--panel-scale));
+}
+
+.form-grid input,
+.composer input {
+  padding: calc(12px * var(--panel-scale)) calc(14px * var(--panel-scale));
+}
+
+.primary-button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent-strong), color-mix(in srgb, var(--accent) 65%, #18202e 35%));
+  color: #f7f9ff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.26);
+}
+
+/* ===== 聊天消息区域：独立滚动，不会和论文区打架 ===== */
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chat-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message-bubble {
+  max-width: 88%;
+  padding: calc(12px * var(--panel-scale)) calc(14px * var(--panel-scale));
+  border-radius: 18px;
+}
+
+.message-bubble.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--accent-strong), color-mix(in srgb, var(--accent) 60%, #202b44 40%));
+  color: #f7f9ff;
+}
+
+.message-bubble.user p,
+.message-bubble.user .message-role {
+  color: inherit;
+}
+
+.message-bubble.assistant {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.message-role {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: calc(12px * var(--panel-scale));
+  font-weight: 700;
+  color: rgba(173, 185, 211, 0.8);
+}
+
+.empty-chat {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  text-align: center;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(222, 229, 245, 0.84);
+  font: inherit;
+  font-size: calc(13px * var(--panel-scale));
+  cursor: pointer;
+}
+
+.chip:hover,
+.theme-button.active,
+.size-button.active {
+  background: var(--accent-soft);
+  border-color: var(--accent-strong);
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+/* ===== 熊猫整体容器：图像与文字说明之间的距离 ===== */
+.panda-pet {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #f4f7ff;
+}
+
+.panda-pet.compact {
+  gap: 6px;
+}
+
+/* ===== 熊猫总画布：整体放大缩小优先调这里 ===== */
+.panda-shell {
+  position: relative;
+  width: 154px;
+  height: 154px;
+  display: grid;
+  place-items: center;
+}
+
+.panda-pet.compact .panda-shell {
+  width: 86px;
+  height: 86px;
+}
+
+.panda-shadow-ring,
+.panda-glow-ring,
+.panda-ear,
+.panda-patch,
+.panda-eye,
+.panda-eye-spark,
+.panda-nose,
+.panda-mouth,
+.panda-face-shine,
+.panda-cheek,
+.panda-belly,
+.panda-chest-glow,
+.panda-arm,
+.panda-paw {
+  position: absolute;
+}
+
+/* ===== 外层两圈光效：改氛围感，不影响五官比例 ===== */
+.panda-shadow-ring,
+.panda-glow-ring {
+  border-radius: 50%;
+}
+
+.panda-shadow-ring {
+  inset: 8px;
+  background: radial-gradient(circle, transparent 52%, rgba(255, 255, 255, 0.04) 54%, transparent 72%);
+  animation: glowPulse 3.8s ease-in-out infinite;
+}
+
+.panda-glow-ring {
+  inset: 18px;
+  border: 1px solid var(--accent-soft);
+  box-shadow: 0 0 22px var(--accent-glow);
+  animation: orbitGlow 12s linear infinite;
+}
+
+/* ===== 熊猫本体排版盒：头和身体的相对摆放范围 ===== */
+.panda-blob {
+  position: relative;
+  width: 110px;
+  height: 124px;
+}
+
+.panda-pet.compact .panda-blob {
+  width: 58px;
+  height: 68px;
+}
+
+/* ===== 熊猫头：top 控制上下位置，width/height 控制脸大小，z-index 控制是否压住身体 ===== */
+.panda-head {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 2;
+  width: 70px;
+  height: 65px;
+  margin-left: -35px;
+  border-radius: 35px 35px 30px 30px;
+  background:
+    radial-gradient(circle at 38% 25%, rgba(255, 255, 255, 0.24), transparent 24%),
+    radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.06), transparent 32%),
+    linear-gradient(180deg, #f9fbff, #dce3ee);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.7),
+    0 16px 26px rgba(0, 0, 0, 0.28);
+}
+
+.panda-pet.compact .panda-head {
+  top: 4px;
+  width: 50px;
+  height: 46px;
+  margin-left: -25px;
+  border-radius: 24px 24px 20px 20px;
+}
+
+/* ===== 耳朵：大小和位置 ===== */
+.panda-ear {
+  top: -10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #161a20, #080b0f);
+}
+
+.panda-ear.left {
+  left: 8px;
+}
+
+.panda-ear.right {
+  right: 8px;
+}
+
+.panda-pet.compact .panda-ear {
+  top: -5px;
+  width: 12px;
+  height: 12px;
+}
+
+/* ===== 脸高光：想更软更亮可以调透明度和大小 ===== */
+.panda-face-shine {
+  top: 12px;
+  left: 18px;
+  width: 22px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.44);
+  filter: blur(1px);
+}
+
+/* ===== 黑眼圈：width/height 是大小，left/right 是横向位置，rotate 是神态 ===== */
+.panda-patch {
+  top: 24px;
+  width: 22px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #252a31, #090c10);
+}
+
+.panda-patch.left {
+  left: 18px;
+  transform: rotate(-12deg);
+}
+
+.panda-patch.right {
+  right: 18px;
+  transform: rotate(12deg);
+}
+
+.panda-pet.compact .panda-patch {
+  top: 13px;
+  width: 12px;
+  height: 16px;
+}
+
+.panda-patch.left,
+.panda-pet.compact .panda-patch.left {
+  left: 10px;
+}
+
+.panda-patch.right,
+.panda-pet.compact .panda-patch.right {
+  right: 10px;
+}
+
+/* ===== 眼睛：left/right 主要控制眼距；width/height 控制眼神；top 控制高低 ===== */
+.panda-eye {
+  top: 34px;
+  width: 8px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fdfefe, var(--accent));
+  box-shadow: 0 0 14px var(--accent-glow);
+  animation: blinkSoft 5.2s ease-in-out infinite;
+  z-index: 1;
+}
+
+.panda-eye.left {
+  left: 30px;
+}
+
+.panda-eye.right {
+  right: 30px;
+}
+
+.panda-eye.calm {
+  height: 10px;
+}
+
+.panda-eye.bright {
+  box-shadow: 0 0 18px var(--accent-glow);
+}
+
+.panda-eye.focused {
+  top: 37px;
+  height: 6px;
+  border-radius: 999px;
+  animation-duration: 1.6s;
+}
+
+.panda-eye.happy {
+  top: 36px;
+  height: 6px;
+  border-radius: 999px;
+  transform: rotate(-10deg);
+}
+
+.panda-eye.right.happy {
+  transform: rotate(10deg);
+}
+
+/* ===== 眼睛高光点：跟着眼睛一起调，不然会看起来偏位 ===== */
+.panda-eye-spark {
+  top: 34px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  z-index: 2;
+}
+
+.panda-eye-spark.left {
+  left: 35px;
+}
+
+.panda-eye-spark.right {
+  right: 35px;
+}
+
+.panda-pet.thinking .panda-eye-spark,
+.panda-pet.engaged .panda-eye-spark {
+  display: none;
+}
+
+.panda-pet.compact .panda-eye {
+  top: 18px;
+  width: 5px;
+  height: 7px;
+}
+
+.panda-pet.compact .panda-eye.left {
+  left: 17px;
+}
+
+.panda-pet.compact .panda-eye.right {
+  right: 17px;
+}
+
+.panda-pet.compact .panda-eye.focused,
+.panda-pet.compact .panda-eye.happy {
+  top: 20px;
+  height: 3px;
+}
+
+.panda-pet.compact .panda-eye-spark {
+  top: 18px;
+  width: 2px;
+  height: 2px;
+}
+
+.panda-pet.compact .panda-eye-spark.left {
+  left: 19px;
+}
+
+.panda-pet.compact .panda-eye-spark.right {
+  right: 19px;
+}
+
+/* ===== 鼻子和嘴：主要决定“可爱感”和表情 ===== */
+.panda-nose {
+  top: 48px;
+  left: 50%;
+  width: 12px;
+  height: 8px;
+  margin-left: -6px;
+  border-radius: 55% 55% 75% 75%;
+  background: #222831;
+}
+
+.panda-mouth {
+  left: 50%;
+  top: 56px;
+  margin-left: -10px;
+}
+
+.panda-mouth.soft {
+  width: 20px;
+  height: 10px;
+  border-bottom: 2px solid rgba(32, 38, 46, 0.8);
+  border-radius: 0 0 14px 14px;
+}
+
+.panda-mouth.smile {
+  width: 22px;
+  height: 12px;
+  border-bottom: 2px solid rgba(32, 38, 46, 0.9);
+  border-radius: 0 0 18px 18px;
+}
+
+.panda-mouth.serious {
+  width: 12px;
+  height: 2px;
+  background: rgba(32, 38, 46, 0.84);
+  border-radius: 999px;
+  margin-top: 4px;
+  margin-left: -6px;
+}
+
+.panda-pet.compact .panda-nose {
+  top: 27px;
+  width: 6px;
+  height: 4px;
+  margin-left: -3px;
+}
+
+.panda-pet.compact .panda-mouth {
+  top: 31px;
+}
+
+.panda-pet.compact .panda-mouth.soft,
+.panda-pet.compact .panda-mouth.smile {
+  width: 10px;
+  height: 5px;
+  margin-left: -5px;
+}
+
+.panda-pet.compact .panda-mouth.serious {
+  width: 6px;
+  margin-left: -3px;
+}
+
+/* ===== 脸颊红晕：透明度越高越萌，越低越克制 ===== */
+.panda-cheek {
+  top: 50px;
+  width: 10px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 179, 195, 0.18);
+}
+
+.panda-cheek.left {
+  left: 15px;
+}
+
+.panda-cheek.right {
+  right: 15px;
+}
+
+/* ===== 身体：bottom 控制与头的距离，z-index 必须小于头，不然会挡脸 ===== */
+.panda-body {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  z-index: 1;
+  width: 78px;
+  height: 50px;
+  margin-left: -39px;
+  border-radius: 28px 28px 22px 22px;
+  background: linear-gradient(180deg, #161b21, #090c10);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 22px rgba(0, 0, 0, 0.28);
+}
+
+.panda-pet.compact .panda-body {
+  width: 42px;
+  height: 24px;
+  margin-left: -21px;
+  border-radius: 16px 16px 12px 12px;
+}
+
+/* ===== 肚皮：决定“熊猫味”强不强 ===== */
+.panda-belly {
+  left: 50%;
+  top: 9px;
+  width: 34px;
+  height: 28px;
+  margin-left: -17px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #f6f8fb, #dde4ef);
+}
+
+.panda-pet.compact .panda-belly {
+  top: 5px;
+  width: 18px;
+  height: 14px;
+  margin-left: -9px;
+}
+
+.panda-chest-glow {
+  top: 10px;
+  left: 50%;
+  width: 18px;
+  height: 16px;
+  margin-left: -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.28), transparent 70%);
+  filter: blur(2px);
+}
+
+/* ===== 手臂和脚：决定姿态是否更抱团、更憨 ===== */
+.panda-arm {
+  top: 10px;
+  width: 18px;
+  height: 30px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #11161b, #06090d);
+}
+
+.panda-arm.left {
+  left: -4px;
+  transform: rotate(16deg);
+}
+
+.panda-arm.right {
+  right: -4px;
+  transform: rotate(-16deg);
+}
+
+.panda-pet.compact .panda-arm {
+  top: 4px;
+  width: 10px;
+  height: 16px;
+}
+
+.panda-paw {
+  bottom: -4px;
+  width: 16px;
+  height: 12px;
+  border-radius: 10px;
+  background: #0d1015;
+}
+
+.panda-paw.left {
+  left: 12px;
+}
+
+.panda-paw.right {
+  right: 12px;
+}
+
+.panda-pet.compact .panda-paw {
+  bottom: -2px;
+  width: 8px;
+  height: 6px;
+}
+
+.panda-pet.compact .panda-paw.left {
+  left: 6px;
+}
+
+.panda-pet.compact .panda-paw.right {
+  right: 6px;
+}
+
+/* ===== 熊猫下方文字：状态标题和副文案 ===== */
+.panda-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.panda-label {
+  font-size: calc(13px * var(--panel-scale));
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.panda-status {
+  color: rgba(206, 214, 232, 0.78);
+  font-size: calc(12px * var(--panel-scale));
+}
+
+.panda-meta p {
+  margin: 4px 0 0;
+  max-width: 300px;
+  color: rgba(203, 210, 228, 0.72);
+  font-size: calc(13px * var(--panel-scale));
+  line-height: 1.6;
+}
+
+.panda-pet.compact .panda-label {
+  font-size: 11px;
+}
+
+.panda-pet.compact .panda-status {
+  font-size: 10px;
+}
+
+.panda-pet.idle .panda-glow-ring,
+.panda-pet.idle .panda-eye {
+  filter: saturate(0.8);
+}
+
+/* ===== 状态动画：开心点头、思考歪头 ===== */
+.panda-pet.engaged .panda-head {
+  animation: pandaBob 2.4s ease-in-out infinite;
+}
+
+.panda-pet.thinking .panda-head {
+  animation: pandaTilt 2.8s ease-in-out infinite;
+}
+
+.modal-backdrop,
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.46);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.settings-modal {
+  width: min(720px, calc(100vw - 32px));
+  max-height: min(86vh, 860px);
+  overflow: hidden;
+  border-radius: 24px;
+  background: radial-gradient(circle at top left, var(--accent-soft), transparent 26%), linear-gradient(145deg, rgba(var(--panel-rgb), 0.96), rgba(18, 21, 29, 0.94));
+  backdrop-filter: blur(24px);
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-body {
+  display: grid;
+  gap: 18px;
+  padding: 18px 20px 20px;
+  overflow-y: auto;
+  max-height: calc(min(86vh, 860px) - 80px);
+}
+
+.settings-block {
+  display: grid;
+  gap: 12px;
+}
+
+.settings-tip {
+  margin: 0;
+}
+
+.exit-modal {
+  width: min(520px, calc(100vw - 32px));
+}
+
+.exit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.settings-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-grid,
+.size-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.theme-button,
+.size-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #eef2fb;
+  cursor: pointer;
+}
+
+.theme-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.18);
+}
+
+.range-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.range-row input[type="range"] {
+  accent-color: var(--accent);
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.34;
+  }
+
+  50% {
+    transform: scale(1.03);
+    opacity: 0.86;
+  }
+}
+
+@keyframes orbitGlow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blinkSoft {
+  0%,
+  46%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  48%,
+  50% {
+    transform: scaleY(0.14);
+  }
+}
+
+@keyframes pandaBob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes pandaTilt {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(-3deg);
+  }
+}
+
+/* ===== 小屏适配：改成单列，避免聊天和论文区挤压 ===== */
+@media (max-width: 1080px) {
+  .hero-main,
+  .chat-first {
+    grid-template-columns: 1fr;
+  }
+
+  .primary-chat-card,
+  .input-card {
+    min-height: auto;
+  }
+
+  .paper-input {
+    min-height: 240px;
+    flex: initial;
+  }
+
+  .chat-box {
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero-stats,
+  .action-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel-header,
+  .panel-body,
+  .modal-head,
+  .modal-body {
+    padding: 14px;
+  }
+
+  .hero-card h2 {
+    font-size: calc(24px * var(--panel-scale));
+  }
+
+  .section-card,
+  .hero-card,
+  .settings-modal {
+    border-radius: 18px;
+  }
+
+  .composer,
+  .settings-inline {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .pet-header-copy h1 {
+    font-size: 18px;
+  }
+}
